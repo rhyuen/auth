@@ -4,7 +4,7 @@ var path = require("path");
 module.exports = function(app, passport){
 
   app.get("/", function(req, res){
-    res.sendfile(path.join(__dirname, "public/views/index.html"));
+    res.sendFile(path.join(__dirname, "public/views/index.html"));
   });
 
   app.get("/login", function(req, res){
@@ -26,13 +26,21 @@ module.exports = function(app, passport){
   }));
 
   app.get("/profile", isLoggedIn, function(req, res){
-    res.sendFile(path.join(__dirname, "public/views/profile.html"));
+    res.render("userprofile", {
+      user: req.user
+    });
   });
 
   app.get('/logout', function(req, res) {
        req.logout();
        res.redirect('/');
    });
+
+   app.get("/auth/twitter", passport.authenticate("twitter"));
+   app.get("/auth/twitter/callback", passport.authenticate("twitter", {
+     successRedirect: "/profile",
+     failureRedirect: "/"
+   }));
 };
 
 function isLoggedIn(req, res, next){

@@ -1,0 +1,5 @@
+node_modules
+Dockerfile
+keys.json
+.gitignore
+.git

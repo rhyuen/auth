@@ -1,5 +1,7 @@
 var LocalStrategy = require("passport-local").Strategy;
+var TwitterStrategy = require("passport-twitter").Strategy;
 var User = require("./models/user.js");
+var config = require("./config.js");
 
 module.exports = function(passport){
   passport.serializeUser(function(user, done){
@@ -59,6 +61,34 @@ module.exports = function(passport){
         return done(null, false);
       }
       return done(null, user);
+    });
+  }));
+
+  passport.use(new TwitterStrategy({
+    consumerKey: config.twitter.consumerKey,
+    consumerSecret: config.twitter.consumerSecret,
+    callbackURL: config.twitter.callbackURL
+  }, function(token, tokenSecret, profile, done){
+    process.nextTick(function(){
+      User.findOne({"twitter.id": profile.id}, function(err, user){
+        if(err)
+          return done(err);
+        if(user){
+          return done(null, user);
+        }else{
+          var newUser = new User();
+          newUser.twitter.id = profile.id;
+          newUser.twitter.token = token;
+          newUser.twitter.username = profile.username;
+          newUser.twitter.displayName = profile.displayName;
+
+          newUser.save(function(err){
+            if(err)
+              throw err;
+            return done(null, newUser);
+          });
+        }
+      });
     });
   }));
 };
