@@ -7,19 +7,33 @@
     <div>
       LOCAL USERID: {{user._id}}
     </div>
-    <div>LOCAL CREDENTIALS</div>
-    <div>LOCAL EMAIL: {{user.local.email}}</div>
+    <div><strong>LOCAL CREDENTIALS</strong></div>
+    <div><strong>LOCAL EMAIL:</strong> {{user.local.email}}</div>
     <div>LOCAL PW: {{user.local.password}}</div>
-    <div>TWITTER CREDENTIALS</div>
+    <div>
+      <div><a href = "/unlink/local">Unlink</a></div>
+      <div><a href = "/connect/local">Connect Local</a></div>
+    </div>
+
+    <div><strong>TWITTER CREDENTIALS</strong></div>
     <div>Twitter DisplayName: {{user.twitter.displayName}}</div>
     <div>Twitter UserName: {{user.twitter.username}}</div>
     <div>Twitter Token: {{user.twitter.token}}</div>
     <div>Twitter ID: {{user.twitter.id}}</div>
-    <div>Google CREDENTIALS</div>
+    <div>
+      <div><a href = "/unlink/twitter">Unlink</a></div>
+      <div><a href = "/connect/twitter">Connect Twitter</a></div>
+    </div>
+
+    <div><strong>Google CREDENTIALS</strong></div>
     <div>Google ID: {{user.google.id}}</div>
     <div>Google Token: {{user.google.token}}</div>
     <div>Google Name: {{user.google.name}}</div>
     <div>Google Email: {{user.google.email}}</div>
+    <div>
+      <div><a href = "/unlink/google">Unlink</a></div>
+      <div><a href = "/connect/google">Connect Google</a></div>
+    </div>
 
   </div>
   <div>

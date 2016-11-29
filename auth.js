@@ -68,29 +68,64 @@ module.exports = function(passport){
   passport.use(new TwitterStrategy({
     consumerKey: config.twitter.consumerKey,
     consumerSecret: config.twitter.consumerSecret,
-    callbackURL: config.twitter.callbackURL
-  }, function(token, tokenSecret, profile, done){
+    callbackURL: config.twitter.callbackURL,
+    passReqToCallback: true //checks if user logged in or not
+  }, function(req, token, tokenSecret, profile, done){
     process.nextTick(function(){
-      User.findOne({"twitter.id": profile.id}, function(err, user){
-        if(err){
-          console.log(err);
-          return done(err);
-        }if(user){
-          return done(null, user);
-        }else{
-          var newUser = new User();
-          newUser.twitter.id = profile.id;
-          newUser.twitter.token = token;
-          newUser.twitter.username = profile.username;
-          newUser.twitter.displayName = profile.displayName;
+      if(!req.user){
+        User.findOne({"twitter.id": profile.id}, function(err, user){
+          if(err){
+            console.log(err);
+            return done(err);
+          }if(user){
+            //UNLIKED CASE, WHEN ID PRESENT BUT TOKEN has been DELETED
+            if(!user.twitter.token){
+              user.twitter.token = token;
+              user.twitter.displayName = profile.displayName;
+              user.twitter.username = profile.username;
 
-          newUser.save(function(err){
-            if(err)
-              throw err;
-            return done(null, newUser);
-          });
-        }
-      });
+              user.save(function(err){
+                if(err){
+                  console.log(err);
+                  throw err;
+                }else{
+                  return done(null, user);
+                }
+              });
+            }
+            return done(null, user);
+          }else{
+            var newUser = new User();
+            newUser.twitter.id = profile.id;
+            newUser.twitter.token = token;
+            newUser.twitter.username = profile.username;
+            newUser.twitter.displayName = profile.displayName;
+
+            newUser.save(function(err){
+              if(err)
+                throw err;
+              return done(null, newUser);
+            });
+          }
+        });
+      //ALREADY LOGGED IN CASE
+      //1) User Exists
+      //2) Pull out of Session, Link ACCT
+      }else{
+        var user = req.user;
+        user.twitter.id = profile.id;
+        user.twitter.token = token;
+        user.twitter.username = profile.username;
+        user.twitter.displayname = profile.displayName;
+
+        user.save(function(err){
+          if(err){
+            console.log(err);
+            throw err;
+          }
+          return done(null, user);
+        });
+      }
     });
   }));
 
