@@ -10,7 +10,7 @@ var config = require("./config.js");
 var session = require("express-session");
 var exphbs = require("express-handlebars");
 var passport = require("passport");
-
+var app = express();
 
 mongoose.connect(config.db, function(err){
   if(err)
@@ -22,10 +22,9 @@ mongoose.connect(config.db, function(err){
 
 require("./auth.js")(passport);
 
-var app = express();
-
 
 app.use(morgan("dev"));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(flash());
@@ -59,10 +58,9 @@ app.use(function(req, res, next){
 app.use(function(err, req, res, next){
   res.status(err.status||500);
   res.render("error", {
-    message: err.mesage,
+    message: err.message,
     error: err
   });
-  //res.send("error");
 });
 
 app.listen(app.get("PORT"), function(){

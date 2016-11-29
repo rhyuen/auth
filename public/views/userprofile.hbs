@@ -5,20 +5,22 @@
   <div>
     User Specific Content
     <div>
-      {{user._id}}
+      LOCAL USERID: {{user._id}}
     </div>
-    <div>
-      {{user.twitter.displayName}}
-    </div>
-    <div>
-      {{user.twitter.username}}
-    </div>
-    <div>
-      {{user.twitter.token}}
-    </div>
-    <div>
-      {{user.twitter.id}}
-    </div>
+    <div>LOCAL CREDENTIALS</div>
+    <div>LOCAL EMAIL: {{user.local.email}}</div>
+    <div>LOCAL PW: {{user.local.password}}</div>
+    <div>TWITTER CREDENTIALS</div>
+    <div>Twitter DisplayName: {{user.twitter.displayName}}</div>
+    <div>Twitter UserName: {{user.twitter.username}}</div>
+    <div>Twitter Token: {{user.twitter.token}}</div>
+    <div>Twitter ID: {{user.twitter.id}}</div>
+    <div>Google CREDENTIALS</div>
+    <div>Google ID: {{user.google.id}}</div>
+    <div>Google Token: {{user.google.token}}</div>
+    <div>Google Name: {{user.google.name}}</div>
+    <div>Google Email: {{user.google.email}}</div>
+
   </div>
   <div>
     <a href = "/logout">Logout</a>

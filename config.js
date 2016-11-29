@@ -14,5 +14,10 @@ module.exports = {
     clientID: process.env.githubClientID || nconf.get("github:clientID"),
     clientSecret : process.env.githubClientSecret || nconf.get("github:clientSecret"),
     callbackURL: process.env.githubCallbackURL || nconf.get("github:callbackURL")
+  },
+  google:{
+    clientID: process.env.googleClientID || nconf.get("google:clientID"),
+    clientSecret: process.env.googleClientSecret || nconf.get("google:clientSecret"), 
+    callbackURL: process.env.googleCallbackURL || nconf.get("google:callbackURL")
   }
 };
