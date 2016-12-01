@@ -65,7 +65,7 @@ module.exports = function(app, passport){
    }));
 
    app.get("/connect/google", passport.authorize("google", {scope: ["profile","email"]}));
-   app.get("connect/google/callback", passport.authorize("google", {
+   app.get("/connect/google/callback", passport.authorize("google", {
      successRedirect: "/profile",
      failureRedirect: "/"
    }));
